@@ -72,7 +72,6 @@ void exaustivaAluno (struct idxAlunos idx[], struct alunos aln[], int cont){
     for (int k=0; k < cont; k++){
         int i = idx[k].end;
         if (aln[i].status == 0){
-        	cout << "\nCPF: " << aln[i].cpf;
             cout << "\nNome: " << aln[i].nome;
             cout << "\tDataNascimento: " << aln[i].dataNascimento;
             cout << "\tPeso: " << aln[i].peso;
@@ -81,6 +80,48 @@ void exaustivaAluno (struct idxAlunos idx[], struct alunos aln[], int cont){
     }
 }
 
+void exclusaoAluno(struct idxAlunos idx[], struct alunos aln[], int &cont, int cod){
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != idx[m].cpf; m = (i + f) / 2){
+        if (cod > idx[m].cpf)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    i = idx[m].end;
+    if ((cod == idx[m].cpf) && aln[i].status == 0){
+        aln[i].status = 1;
+        cout << "\n\n Cliente Excluido com Sucesso";
+    }
+    else
+        cout << "Cliente nao cadastrado";
+    getch();
+}
+
+
+void buscaAleatAluno(struct idxAlunos idx[], struct alunos aln[], int cont, int cod){
+    int i = 0, f = cont-1;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != idx[m].cpf; m = (i + f) / 2){
+        if (cod > idx[m].cpf)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if (cod == idx[m].cpf){
+        cout << "\n\n Cliente Encontrado";
+        i = idx[m].end;
+        cout << "\nCPF do Cliente: " << aln[i].cpf;
+        cout << "\tNome: " << aln[i].nome;
+        cout << "\tData de nascimento: " << aln[i].dataNascimento;
+        cout << "\tPeso: " << aln[i].peso;
+        cout << "\tAltura: " << aln[i].altura;
+    }
+    else
+        cout << "\n\n Cliente nao Encontrado";
+    getch();
+}
 //==============================================
 struct professores{
 	int codProf;
@@ -132,9 +173,9 @@ int main(){
 	int contAlunos = t + 1;
 	struct alunos aluno[t] =
 	{
-		{57140933804, "Jonathan", "04/07/2003", 75.5, 1.80}, //pos 0
-		{42050277942, "Pedro", "17/02/2002" , 76.0, 1.80}, //pos 1
-		{37343706802, "Marcel", "05/09/1989", 90.0, 1.75}//pos 2	
+		{57140933804, "Jonathan", "04/07/2003", 75.5, 1.80, 0}, //pos 0
+		{42050277942, "Pedro", "17/02/2002" , 76.0, 1.80, 0}, //pos 1
+		{37343706802, "Marcel", "05/09/1989", 90.0, 1.75, 0}//pos 2	
 	};
 	
 	struct idxAlunos indAln[t] = 
@@ -144,6 +185,16 @@ int main(){
 		{42050277942, 1}
 	};
 	
+	int contProfessor;
+	struct professores professor[t] = 
+	{
+		{1, "Marcelo", "Rui Barbosa 1000", 18123456789 }
+	};
+	
+	struct idxProfessores indProf[t] = 
+	{
+		{1, 0}
+	};
 	int opcao = 30;
 	while(opcao != 0){
 		cout << "\n\t*** ACADEMIA POWERON ***" << endl;
@@ -163,23 +214,35 @@ int main(){
 			case 1:
 				cout << "\tIncluir Alunos: " << endl;
 				for (long int codpesq = 9; codpesq != 0;){
-        			cout << "\n\nInforme o Codigo do Cliente a ser Incluído (0 para Encerrar): ";
+        			cout << "\n\nInforme o CPF do Aluno a ser Incluído (0 para Encerrar): ";
         			cin >> codpesq;
         			if (codpesq != 0)
             			buscaAluno(indAln, aluno, contAlunos, codpesq);
     			}
 				break;
 			case 2:
-				cout << "Excluir alunos: " << endl;	
+				cout << "\tExcluir alunos: " << endl;
+				for (int codpesq = 9; codpesq != 0;){
+        			cout << "\n\nInforme o CPF do aluno a ser Excluído (0 para Encerrar): ";
+        			cin >> codpesq;
+       				 if (codpesq != 0)
+            			exclusaoAluno(indAln, aluno, contAlunos, codpesq);
+				}
 				break;
 			case 3:	
-				cout << "Buscar alunos: " << endl;
+				cout << "\tBuscar alunos: " << endl;
+				for (int codpesq = 9; codpesq != 0;){
+					cout << "\n\nInforme o CPF do aluno a ser Buscado (0 para Encerrar): ";
+        			cin >> codpesq;
+        				if (codpesq != 0)
+           					buscaAleatAluno(indAln, aluno, contAlunos, codpesq);
+           		}
 				break;
 			case 4:
-				cout << "Reorganização dos alunos" << endl;
+				cout << "\tReorganização dos alunos" << endl;
 				break;		
 			case 5:
-				cout << "Leitura Exaustiva dos Registros";
+				cout << "\tLeitura Exaustiva dos Registros";
    				exaustivaAluno(indAln,aluno,contAlunos);
 				break;	
 			case 0:
