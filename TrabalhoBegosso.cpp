@@ -303,13 +303,64 @@ struct modalidades{
 	float precoAula;
 	int limiteAlunos;
 	int totalAlunos;
+	int status;
 };
 
 struct idxModalidades{
-	int codMod;
+	int cod;
 	int end;	
 };
 
+void inclusaoModalidade(struct idxModalidades idx[], struct modalidades mod[], int &cont, int cod){  
+    // inclusao do novo registro na area de dados
+    mod[cont].codMod = cod;
+    cout << "\nCodigo da Modalidade: ";
+    cin >> mod[cont].codMod;
+    cout << "\nCodigo do Professor: ";
+    cin >> mod[cont].codProf;
+    cout << "\tDescricao: ";
+    cin >> mod[cont].descricao;
+    cout << "\tPreco da aula: ";
+    cin >> mod[cont].precoAula;
+    cout << "\tLimite de Alunos: ";
+    cin >> mod[cont].limiteAlunos;
+    cout << "\tTotal de Alunos: ";
+    cin >> mod[cont].totalAlunos;
+    // inclusao na area de indices
+    int i;
+    for (i = cont - 1; idx[i].cod > cod; i--){
+        idx[i+1].cod = idx[i].cod;
+        idx[i+1].end = idx[i].end;
+    }
+    idx[i+1].cod = cod;
+    idx[i+1].end = cont;
+    cout << "\n\nInclusao realizada com Sucesso";
+    cont++;
+}
+
+void buscaModalidade(struct idxModalidades idx[], struct modalidades mod[], int &cont, int cod){
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if (cod == idx[m].cod){
+        cout << "\n\n Modalidade ja Cadastrada - nao pode ser cadastrado novamente";
+        i = idx[m].end;
+        cout << "\nCodigo da Modalidade: " << mod[i].codMod;
+        cout << "\nCodigo do Professor: " << mod[i].codProf;
+        cout << "\tDescricao: " << mod[i].descricao;
+        cout << "\tPreco da aula: " << mod[i].precoAula;
+        cout << "\tLimite de Alunos: " << mod[i].limiteAlunos;
+        cout << "\tTotal de Alunos: " << mod[i].totalAlunos;
+    }
+    else
+        inclusaoModalidade(idx, mod, cont, cod);
+    getch();
+}
 
 //==============================================
 struct matriculas{
@@ -361,6 +412,19 @@ int main(){
 		{2, 1}
 	};
 	struct idxProfessores idxProfNovo[t];
+	
+	int contModalidade = t;
+	struct modalidades modalidade[t] = {
+		{1, "Boxe", 1, 89.90, 20,  10},
+		{2, "Musculacao", 2, 99.90, 500,  458},
+		{3, "Karatê", 3, 89.90, 20, 13}
+	};
+	
+	struct idxModalidades idxMod[t] = {
+		{1, 3},
+		{2, 2},
+		{3, 1}
+	};
 	
 	int opcao = 30;
 	while(opcao != 0){
@@ -472,7 +536,12 @@ int main(){
 				break;
 			case 11:
 				cout << "\tIncluir Modalidades" << endl;
-				
+				for(long int codpesq = 9; codpesq != 0;){
+        			cout << "\n\nInforme o codigo do professor a ser Incluído (0 para Encerrar)" << endl;
+        			cin >> codpesq;
+        			if (codpesq != 0)
+            			buscaModalidade(idxMod, modalidade, contModalidade, codpesq);
+    			}
 				break;
 			case 12:
 				cout << "\tExcluir Modalidades" << endl;
@@ -510,7 +579,7 @@ int main(){
 				opcao = 0;
 				break;
 			default:
-				cout << "N?mero inv?lido" << endl;
+				cout << "Numero invalido" << endl;
 				break;		
 		}		
 	}
