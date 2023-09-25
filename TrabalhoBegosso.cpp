@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <locale.h>
 #include <math.h>
+#include <string.h>
 
 using namespace std; 
 
@@ -147,20 +148,20 @@ void buscaAleatAluno(struct idxAlunos idx[], struct alunos aln[], int cont,long 
     getch();
 }
 
-void reorganizacaoAluno(struct idxAlunos idx[], struct idxAlunos novoidx[], struct alunos cli[], struct alunos novocli[], int &cont){
+void reorganizacaoAluno(struct idxAlunos idx[], struct idxAlunos novoidx[], struct alunos aln[], struct alunos novoAln[], int &cont){
     int j=-1;
     for (int k=0; k < cont; k++){
         int i = idx[k].end;
-        if (cli[i].status == 0){
+        if (aln[i].status == 0){
             j++;
-            novocli[j].cpf = cli[i].cpf;
-            strcpy (novocli[j].nome,cli[i].nome);
-            strcpy (novocli[j].endereco,cli[i].endereco);
-            strcpy (novocli[j].cidade,cli[i].cidade);
-            strcpy (novocli[j].uf,cli[i].uf);
-            novocli[j].status = 0;
-            novoidx[j].codigo = novocli[j].codigo;
-            novoidx[j].ender = j;
+            novoAln[j].cpf = aln[i].cpf;
+            strcpy(novoAln[j].nome,aln[i].nome);
+            strcpy(novoAln[j].dataNascimento,aln[i].dataNascimento);
+            novoAln[j].altura = aln[i].altura;
+            novoAln[j].peso = aln[i].peso;
+            novoAln[j].status = 0;
+            novoidx[j].cpf = novoAln[j].cpf;
+            novoidx[j].end = j;
         }
     }
     cont = j+1;
@@ -311,7 +312,7 @@ int main(){
 				break;
 			case 4:
 				cout << "\tReorganiza??o dos alunos" << endl;
-				reorganizacaoAluno();
+				reorganizacaoAluno(indAln, idxAlunNovo, aluno, alunoNovo, contAlunos);
 				break;		
 			case 5:
 				cout << "\tLeitura Exaustiva dos Registros";
