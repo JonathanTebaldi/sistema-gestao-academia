@@ -23,7 +23,6 @@ struct idxAlunos{
 
 
 void inclusaoAluno(struct idxAlunos idx[], struct alunos aln[], int &cont, long int cod){
-    
     // inclusao do novo registro na area de dados
     aln[cont].cpf = cod;
     cout << "\nNome: ";
@@ -54,8 +53,6 @@ void inclusaoAluno(struct idxAlunos idx[], struct alunos aln[], int &cont, long 
 	}else{
 		cout << "**(Obesidade III (mórbida))**";
 	}
-    
-    
     // inclusao na area de indices
     int i;
     for (i = cont - 1; idx[i].cpf > cod; i--){
@@ -173,6 +170,7 @@ struct professores{
 	char nome[30];
 	char endereco[30];
 	long int telefone;
+	int status;
 };
 
 struct idxProfessores{
@@ -180,6 +178,111 @@ struct idxProfessores{
 	int end;
 };
 
+
+void inclusaoProfessor(struct idxProfessores idx[], struct professores prof[], int &cont, int cod){
+    // inclusao do novo registro na area de dados
+    prof[cont].codProf = cod;
+    cout << "Nome: ";
+    cin >> prof[cont].nome;
+    cout << "Endereco: ";
+    cin >> prof[cont].endereco;
+    cout << "Telefone: ";
+    cin >> prof[cont].telefone;
+    // inclusao na area de indices
+    int i;
+    for (i = cont - 1; idx[i].cod > cod; i--){
+        idx[i+1].cod = idx[i].cod;
+        idx[i+1].end = idx[i].end;
+    }
+    idx[i+1].cod = cod;
+    idx[i+1].end = cont;
+    cout << "\n\nInclusao realizada com Sucesso";
+    cont++;
+}
+
+
+
+void buscaProfessor(struct idxProfessores idx[], struct professores prof[], int &cont, int cod){
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if (cod == idx[m].cod){
+        cout << "\n\n Professor ja Cadastrado - nao pode ser cadastrado novamente";
+        i = idx[m].end;
+        cout << "\nCodigo do Professor: " << prof[i].codProf;
+        cout << "\tNome: " << prof[i].nome;
+        cout << "\tEndereco: " << prof[i].endereco;
+        cout << "\tTelefone: " << prof[i].telefone;
+    }
+    else
+        inclusaoProfessor(idx, prof, cont, cod);
+    getch();
+}
+
+void exclusaoProfessor(struct idxProfessores idx[], struct professores prof[], int &cont, int cod){
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    i = idx[m].end;
+    if ((cod == idx[m].cod) && prof[i].status == 0){
+        prof[i].status = 1;
+        cout << "\n\n Cliente Excluido com Sucesso";
+    }
+    else
+        cout << "Cliente nao cadastrado";
+    getch();
+}
+
+void buscaAleatProf(struct idxProfessores idx[], struct professores prof[], int cont,int cod){
+    int i = 0, f = cont-1;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if (cod == idx[m].cod){
+        cout << "\n\n Professor Encontrado";
+        i = idx[m].end;
+        cout << "\nCodigo do Professor: " << prof[i].codProf;
+        cout << "\tNome: " << prof[i].nome;
+        cout << "\tEndereco: " << prof[i].endereco;
+        cout << "\tTelefone: " << prof[i].telefone;
+    }
+    else
+        cout << "\n\n Cliente nao Encontrado";
+    getch();
+}
+
+
+void reorganizacaoProf(struct idxProfessores idx[], struct idxProfessores novoidx[], struct professores prof[], struct professores novoProf[], int &cont){
+    int j=-1;
+    for (int k=0; k < cont; k++){
+        int i = idx[k].end;
+        if (prof[i].status == 0){
+            j++;
+            novoProf[j].codProf = prof[i].codProf;
+            strcpy(novoProf[j].nome,prof[i].nome);
+            strcpy(novoProf[j].endereco, prof[i].endereco);
+            novoProf[j].telefone = prof[i].telefone;
+            novoProf[j].status = 0;
+            novoidx[j].cod = novoProf[j].codProf;
+            novoidx[j].end = j;
+        }
+    }
+    cont = j+1;
+}
 
 //==============================================
 struct modalidades{
@@ -233,18 +336,21 @@ int main(){
 	};
 	struct idxAlunos idxAlunNovo[t];
 	
-	int contProfessor;
+	int contProfessor = t;
 	struct professores professor[t] = 
 	{
 		{1, "Marcelo", "Rui Barbosa 1000", 18123456789 },
 		{2, "Ricardo", "Armando Sales 300", 18997454545}
 	};
+	struct professores professorNovo[t];
 	
 	struct idxProfessores indProf[t] = 
 	{
 		{1, 0},
 		{2, 1}
 	};
+	struct idxProfessores idxProfNovo[t];
+	
 	int opcao = 30;
 	while(opcao != 0){
 		cout << "\n\t*** ACADEMIA POWERON ***" << endl;
@@ -285,7 +391,7 @@ int main(){
 		switch(opcao){
 			case 1:
 				cout << "\tIncluir Alunos: " << endl;
-				for (long int codpesq = 9; codpesq != 0;){
+				for(long int codpesq = 9; codpesq != 0;){
         			cout << "\n\nInforme o CPF do Aluno a ser Incluído(01/01/2021) \n(0 para Encerrar)" << endl;
         			cin >> codpesq;
         			if (codpesq != 0)
@@ -294,7 +400,7 @@ int main(){
 				break;
 			case 2:
 				cout << "\tExcluir alunos: " << endl;
-				for (long int codpesq = 9; codpesq != 0;){
+				for(int codpesq = 9; codpesq != 0;){
         			cout << "\n\nInforme o CPF do aluno a ser Exclu?do (0 para Encerrar): ";
         			cin >> codpesq;
        				 if (codpesq != 0)
@@ -303,7 +409,7 @@ int main(){
 				break;
 			case 3:	
 				cout << "\tBuscar alunos: " << endl;
-				for (long int codpesq = 9; codpesq != 0;){
+				for(long int codpesq = 9; codpesq != 0;){
 					cout << "\n\nInforme o CPF do aluno a ser Buscado (0 para Encerrar): ";
         			cin >> codpesq;
         				if (codpesq != 0)
@@ -320,18 +426,34 @@ int main(){
 				break;
 			case 6:
 				cout << "\tIncluir Professores" << endl;
-				
+				for(long int codpesq = 9; codpesq != 0;){
+        			cout << "\n\nInforme o codigo do professor a ser Incluído (0 para Encerrar)" << endl;
+        			cin >> codpesq;
+        			if (codpesq != 0)
+            			buscaProfessor(indProf, professor, contProfessor, codpesq);
+    			}
 				break;
 			case 7:
 				cout << "\rExcluir Professores" << endl;
-				
+				for(long int codpesq = 9; codpesq != 0;){
+        			cout << "\n\nInforme o codigo do Professor a ser excluido (0 para Encerrar): ";
+        			cin >> codpesq;
+       				 if (codpesq != 0)
+            			exclusaoProfessor(indProf, professor, contProfessor, codpesq);
+				}
 				break;
 			case 8:	
-				cout << "\tBuscar Professpres" << endl;
-				
+				cout << "\tBuscar Professores" << endl;
+				for(int codpesq = 9; codpesq != 0;){
+					cout << "\n\nInforme o codigo do professor a ser Buscado (0 para Encerrar): ";
+        			cin >> codpesq;
+        				if (codpesq != 0)
+           					buscaAleatProf(indProf, professor, contProfessor, codpesq);
+           		}
 				break;
 			case 9:
 				cout << "\tReorganização dos professores" << endl;
+				reorganizacaoProf(indProf, idxProfNovo, professor, professorNovo, contProfessor);
 				break;
 			case 10:
 				cout << "\tLeitura Exaustiva dos registros" << endl;
