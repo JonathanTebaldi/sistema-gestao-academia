@@ -224,6 +224,17 @@ void buscaProfessor(struct idxProfessores idx[], struct professores prof[], int 
     getch();
 }
 
+void exaustivaProfessor(struct idxProfessores idx[], struct professores prof[], int cont){
+    for (int k=0; k < cont; k++){
+        int i = idx[k].end;
+        if (prof[i].status == 0){
+            cout << "\nNome: " << prof[i].nome;
+            cout << "\tEndereco: " << prof[i].endereco;
+            cout << "\tTelefone: " << prof[i].telefone;
+        }
+    }
+}
+
 void exclusaoProfessor(struct idxProfessores idx[], struct professores prof[], int &cont, int cod){
     int i = 0, f = cont;
     int m = (i + f) / 2;
@@ -457,6 +468,7 @@ int main(){
 				break;
 			case 10:
 				cout << "\tLeitura Exaustiva dos registros" << endl;
+				exaustivaProfessor(indProf,professor,contProfessor);
 				break;
 			case 11:
 				cout << "\tIncluir Modalidades" << endl;
