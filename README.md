@@ -7,3 +7,4 @@ O software precisa fazer o gerenciamento para diversos professores para diferent
 Manter os respectivos registros para garantir um atendimento eficiente e uma boa gestão do faturamento da academia.
 Para simular arquivos indexados o programa é usado struct.
 
+![image](https://github.com/JonathanTebaldi/sistema-gestao-academia/assets/119441609/fe54bd25-5609-4843-bc21-3371ded0a634)
