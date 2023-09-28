@@ -35,5 +35,10 @@ Como exemplo o indice de alunos:
 
 ![image](https://github.com/JonathanTebaldi/sistema-gestao-academia/assets/119441609/2723f60f-5318-4637-8919-ab5972aca3a0)
 
+Menu:
+
+![image](https://github.com/JonathanTebaldi/sistema-gestao-academia/assets/119441609/2f12db94-8231-4688-a254-a7c8af7ebe80)
+
+
 
 
