@@ -272,7 +272,7 @@ void buscaAleatProf(struct idxProfessores idx[], struct professores prof[], int 
         cout << "\tTelefone: " << prof[i].telefone;
     }
     else
-        cout << "\n\n Cliente nao Encontrado";
+        cout << "\n\n Professor nao Encontrado";
     getch();
 }
 
@@ -381,6 +381,30 @@ void exclusaoModalidade(struct idxModalidades idx[], struct modalidades mod[], i
     getch();
 }
 
+void buscaAleatMod(struct idxModalidades idx[], struct modalidades mod[], int cont,int cod){
+    int i = 0, f = cont-1;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if (cod == idx[m].cod){
+        cout << "\n\n Modalidade Encontrada";
+        i = idx[m].end;
+        cout << "\nCodigo da modalidade: " << mod[i].codProf;
+        cout << "\tDescricao: " << mod[i].descricao;
+        cout << "\tCodigo do professor: " << mod[i].codProf;
+        cout << "\tPreco da aula: " << mod[i].precoAula;
+        cout << "\tLimite de alunos: " << mod[i].limiteAlunos;
+        cout << "\tTotal de alunos: " << mod[i].totalAlunos;
+    }
+    else
+        cout << "\n\n Modalidade nao Encontrado";
+    getch();
+}
+
 //==============================================
 struct matriculas{
 	int codMatr;
@@ -390,7 +414,7 @@ struct matriculas{
 };
 
 struct idxMatriculas{
-	int codMatr;
+	int cod;
 	int end;
 };
 
@@ -484,7 +508,7 @@ int main(){
 		
 		switch(opcao){
 			case 1:
-				cout << "\tIncluir Alunos: " << endl;
+				cout << "\tIncluir Aluno: " << endl;
 				for(long int codpesq = 9; codpesq != 0;){
         			cout << "\n\nInforme o CPF do Aluno a ser Incluído(01/01/2021) \n(0 para Encerrar)" << endl;
         			cin >> codpesq;
@@ -493,7 +517,7 @@ int main(){
     			}
 				break;
 			case 2:
-				cout << "\tExcluir alunos: " << endl;
+				cout << "\tExcluir aluno: " << endl;
 				for(int codpesq = 9; codpesq != 0;){
         			cout << "\n\nInforme o CPF do aluno a ser Exclu?do (0 para Encerrar): ";
         			cin >> codpesq;
@@ -502,7 +526,7 @@ int main(){
 				}
 				break;
 			case 3:	
-				cout << "\tBuscar alunos: " << endl;
+				cout << "\tBuscar aluno: " << endl;
 				for(long int codpesq = 9; codpesq != 0;){
 					cout << "\n\nInforme o CPF do aluno a ser Buscado (0 para Encerrar): ";
         			cin >> codpesq;
@@ -511,7 +535,7 @@ int main(){
            		}
 				break;
 			case 4:
-				cout << "\tReorganiza??o dos alunos" << endl;
+				cout << "\tReorganizacao dos alunos" << endl;
 				reorganizacaoAluno(indAln, idxAlunNovo, aluno, alunoNovo, contAlunos);
 				break;		
 			case 5:
@@ -519,7 +543,7 @@ int main(){
    				exaustivaAluno(indAln,aluno,contAlunos);
 				break;
 			case 6:
-				cout << "\tIncluir Professores" << endl;
+				cout << "\tIncluir Professor" << endl;
 				for(long int codpesq = 9; codpesq != 0;){
         			cout << "\n\nInforme o codigo do professor a ser Incluído (0 para Encerrar)" << endl;
         			cin >> codpesq;
@@ -528,7 +552,7 @@ int main(){
     			}
 				break;
 			case 7:
-				cout << "\rExcluir Professores" << endl;
+				cout << "\rExcluir Professor" << endl;
 				for(long int codpesq = 9; codpesq != 0;){
         			cout << "\n\nInforme o codigo do Professor a ser excluido (0 para Encerrar): ";
         			cin >> codpesq;
@@ -537,7 +561,7 @@ int main(){
 				}
 				break;
 			case 8:	
-				cout << "\tBuscar Professores" << endl;
+				cout << "\tBuscar Professor" << endl;
 				for(int codpesq = 9; codpesq != 0;){
 					cout << "\n\nInforme o codigo do professor a ser Buscado (0 para Encerrar): ";
         			cin >> codpesq;
@@ -554,7 +578,7 @@ int main(){
 				exaustivaProfessor(indProf,professor,contProfessor);
 				break;
 			case 11:
-				cout << "\tIncluir Modalidades" << endl;
+				cout << "\tIncluir Modalidade" << endl;
 				for(long int codpesq = 9; codpesq != 0;){
         			cout << "\n\nInforme o codigo do professor a ser Incluído (0 para Encerrar)" << endl;
         			cin >> codpesq;
@@ -563,7 +587,7 @@ int main(){
     			}
 				break;
 			case 12:
-				cout << "\tExcluir Modalidades" << endl;
+				cout << "\tExcluir Modalidade" << endl;
 				for(long int codpesq = 9; codpesq != 0;){
         			cout << "\n\nInforme o codigo do Modalidade a ser excluido (0 para Encerrar): ";
         			cin >> codpesq;
@@ -572,8 +596,13 @@ int main(){
 				}
 				break;
 			case 13:	
-				cout << "\tBuscar Modalidades" << endl;
-				
+				cout << "\tBuscar Modalidade" << endl;
+				for(int codpesq = 9; codpesq != 0;){
+					cout << "\n\nInforme o codigo da Modalidade a ser Buscado (0 para Encerrar): ";
+        			cin >> codpesq;
+        				if (codpesq != 0)
+           					buscaAleatMod(idxMod, modalidade, contModalidade, codpesq);
+           		}
 				break;
 			case 14:
 				cout << "\tReorganização das Modalidades" << endl;
