@@ -362,6 +362,25 @@ void buscaModalidade(struct idxModalidades idx[], struct modalidades mod[], int 
     getch();
 }
 
+void exclusaoModalidade(struct idxModalidades idx[], struct modalidades mod[], int &cont, int cod){
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    i = idx[m].end;
+    if ((cod == idx[m].cod) && mod[i].status == 0){
+        mod[i].status = 1;
+        cout << "\n\n Cliente Excluido com Sucesso";
+    }
+    else
+        cout << "Cliente nao cadastrado";
+    getch();
+}
+
 //==============================================
 struct matriculas{
 	int codMatr;
@@ -545,7 +564,12 @@ int main(){
 				break;
 			case 12:
 				cout << "\tExcluir Modalidades" << endl;
-				
+				for(long int codpesq = 9; codpesq != 0;){
+        			cout << "\n\nInforme o codigo do Modalidade a ser excluido (0 para Encerrar): ";
+        			cin >> codpesq;
+       				 if (codpesq != 0)
+            			exclusaoModalidade(idxMod, modalidade, contModalidade, codpesq);
+				}
 				break;
 			case 13:	
 				cout << "\tBuscar Modalidades" << endl;
