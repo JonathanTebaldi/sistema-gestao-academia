@@ -29,4 +29,11 @@ struct matriculas:
 ![image](https://github.com/JonathanTebaldi/sistema-gestao-academia/assets/119441609/6bd2a085-37f9-42a1-81b7-630407814369)
 
 
+Cada struct tem outra struct de indice para reorganização de dados para ser colocado em ordem.
+Como exemplo o indice de alunos:
+
+
+![image](https://github.com/JonathanTebaldi/sistema-gestao-academia/assets/119441609/2723f60f-5318-4637-8919-ab5972aca3a0)
+
+
 
