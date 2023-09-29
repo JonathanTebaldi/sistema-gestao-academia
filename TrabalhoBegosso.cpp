@@ -39,19 +39,19 @@ void inclusaoAluno(struct idxAlunos idx[], struct alunos aln[], int &cont, long 
     calc = aln[cont].peso / (aln[cont].altura * aln[cont].altura);
     cout << "calc = " << calc;
     if(calc < 17){
-    	cout << "**(Você está muito abaixo do peso)**";
+    	cout << "*(Você está muito abaixo do peso)*";
     }else if(calc > 17 && calc < 18,49){
-    	cout << "**(Você está abaixo do peso)**";
+    	cout << "*(Você está abaixo do peso)*";
 	}else if(calc > 18,5 && calc < 24,99){
 		cout << "**(Peso normal";		
 	}else if(calc > 25 && calc < 29,99){
-		cout << "**(Você está acima do peso)**";
+		cout << "*(Você está acima do peso)*";
 	}else if(calc > 30 && calc < 34,99){
-		cout << "**(Obesidade I)**";
+		cout << "*(Obesidade I)*";
 	}else if(calc > 35 && calc < 39,99){
-		cout << "**(Obesidade II (severa))**";
+		cout << "*(Obesidade II (severa))*";
 	}else{
-		cout << "**(Obesidade III (mórbida))**";
+		cout << "*(Obesidade III (mórbida))*";
 	}
     // inclusao na area de indices
     int i;
@@ -405,6 +405,26 @@ void buscaAleatMod(struct idxModalidades idx[], struct modalidades mod[], int co
     getch();
 }
 
+void reorganizacaoMod(struct idxModalidades idx[], struct idxModalidades novoidx[], struct modalidades mod[], struct modalidades novoMod[], int &cont){
+    int j=-1;
+    for (int k=0; k < cont; k++){
+        int i = idx[k].end;
+        if (mod[i].status == 0){
+            j++;
+            novoMod[j].codMod = mod[i].codMod;
+            strcpy(novoMod[j].descricao,mod[i].descricao);
+            novoMod[j].codProf = mod[i].codProf;
+            novoMod[j].precoAula = mod[i].precoAula;
+            novoMod[j].limiteAlunos = mod[i].limiteAlunos;
+            novoMod[j].totalAlunos = mod[i].totalAlunos;
+            novoMod[j].status = 0;
+            novoidx[j].cod = novoMod[j].codMod;
+            novoidx[j].end = j;
+        }
+    }
+    cont = j+1;
+}
+
 //==============================================
 struct matriculas{
 	int codMatr;
@@ -462,16 +482,18 @@ int main(){
 		{2, "Musculacao", 2, 99.90, 500,  458},
 		{3, "Karatê", 3, 89.90, 20, 13}
 	};
+	struct modalidades modalidadeNovo[t];
 	
 	struct idxModalidades idxMod[t] = {
 		{1, 3},
 		{2, 2},
 		{3, 1}
 	};
+	struct idxModalidades idxModNovo[t];
 	
 	int opcao = 30;
 	while(opcao != 0){
-		cout << "\n\t*** ACADEMIA POWERON ***" << endl;
+		cout << "\n\t** ACADEMIA POWERON **" << endl;
 		cout << "----------------------------------------------" << endl;
 		cout << "Alunos:" << endl;
 		cout << "[1]- Inclusão de novos alunos" << endl;
@@ -606,6 +628,7 @@ int main(){
 				break;
 			case 14:
 				cout << "\tReorganização das Modalidades" << endl;
+				reorganizacaoMod(idxMod, idxModNovo, modalidade, modalidadeNovo, contModalidade);
 				break;
 			case 15:
 				cout << "\tLeitura Exaustiva dos registros" << endl;
@@ -615,7 +638,7 @@ int main(){
 				
 				break;
 			case 17:
-				cout << "\rExcluir Matriculas" << endl;
+				cout << "\tExcluir Matriculas" << endl;
 				
 				break;
 			case 18:	
