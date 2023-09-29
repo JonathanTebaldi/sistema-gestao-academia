@@ -425,6 +425,20 @@ void reorganizacaoMod(struct idxModalidades idx[], struct idxModalidades novoidx
     cont = j+1;
 }
 
+void exaustivaModalidade(struct idxModalidades idx[], struct modalidades mod[], int cont){
+    for (int k=0; k < cont; k++){
+        int i = idx[k].end;
+        if (mod[i].status == 0){
+        	cout << "\nCodigo da modalidade" << mod[i].codMod;
+            cout << "\nCodigo do professor: " << mod[i].codProf;
+            cout << "\nDescricao: " << mod[i].descricao;
+            cout << "\nPreco da aula: " << mod[i].precoAula;
+            cout << "\nLimite de alunos: " << mod[i].limiteAlunos;
+            cout << "\nTotal de alunos: " << mod[i].totalAlunos;
+        }
+    }
+}
+
 //==============================================
 struct matriculas{
 	int codMatr;
@@ -632,6 +646,7 @@ int main(){
 				break;
 			case 15:
 				cout << "\tLeitura Exaustiva dos registros" << endl;
+				exaustivaModalidade(idxMod,modalidade,contModalidade);
 				break;		
 			case 16:
 				cout << "\tIncluir Matriculas" << endl;
