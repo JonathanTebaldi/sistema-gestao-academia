@@ -452,6 +452,52 @@ struct idxMatriculas{
 	int end;
 };
 
+
+void inclusaoMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &cont, int cod){  
+    // inclusao do novo registro na area de dados
+    mat[cont].codMatr = cod;
+    cout << "\nCodigo da Matricula: ";
+    cin >> mat[cont].codMatr;
+    cout << "\nCPF do aluno: ";
+    cin >> mat[cont].cpf;
+    cout << "\tCodigo da modalidade: ";
+    cin >> mat[cont].codMod;
+    cout << "\tQuantidade de aulas: ";
+    cin >> mat[cont].qntdAulas;
+    // inclusao na area de indices
+    int i;
+    for (i = cont - 1; idx[i].cod > cod; i--){
+        idx[i+1].cod = idx[i].cod;
+        idx[i+1].end = idx[i].end;
+    }
+    idx[i+1].cod = cod;
+    idx[i+1].end = cont;
+    cout << "\n\nInclusao realizada com Sucesso";
+    cont++;
+}
+
+void buscaMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &cont, int cod){
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if (cod == idx[m].cod){
+        cout << "\n\n Modalidade ja Cadastrada - nao pode ser cadastrado novamente";
+        i = idx[m].end;
+        cout << "\nCodigo da Matricula: " << mat[i].codMatr;
+        cout << "\nCPF do aluno: " << mat[i].cpf;
+        cout << "\tCodigo da Modalidade: " << mat[i].codMod;
+        cout << "\tQuantidade de aulas: " << mat[i].qntdAulas;
+    }
+    else
+        inclusaoMatricula(idx, mat, cont, cod);
+    getch();
+}
+
 //==============================================
 
 int main(){
@@ -504,6 +550,19 @@ int main(){
 		{3, 1}
 	};
 	struct idxModalidades idxModNovo[t];
+	
+	int contMatricula = t;
+	struct matriculas matricula[t] = {
+		{1, 57140933804, 2},
+		{2, 42050277942, 1},
+		{3, 37343706802, 3}
+	};
+	
+	struct idxMatriculas idxMat[t] = {
+		{2, 1},
+		{3, 2},
+		{1, 0}	
+	};
 	
 	int opcao = 30;
 	while(opcao != 0){
@@ -650,7 +709,12 @@ int main(){
 				break;		
 			case 16:
 				cout << "\tIncluir Matriculas" << endl;
-				
+				for(long int codpesq = 9; codpesq != 0;){
+        			cout << "\n\nInforme o codigo do professor a ser Incluído (0 para Encerrar)" << endl;
+        			cin >> codpesq;
+        			if (codpesq != 0)
+            			buscaMatricula(idxMat, matricula, contMatricula, codpesq);
+    			}
 				break;
 			case 17:
 				cout << "\tExcluir Matriculas" << endl;
