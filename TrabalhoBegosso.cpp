@@ -434,7 +434,7 @@ void exaustivaModalidade(struct idxModalidades idx[], struct modalidades mod[], 
             cout << "\nDescricao: " << mod[i].descricao;
             cout << "\nPreco da aula: " << mod[i].precoAula;
             cout << "\nLimite de alunos: " << mod[i].limiteAlunos;
-            cout << "\nTotal de alunos: " << mod[i].totalAlunos;
+            cout << "\nTotal de alunos: " << mod[i].totalAlunos << endl;
         }
     }
 }
@@ -445,6 +445,7 @@ struct matriculas{
 	long int cpf;
 	int codMod;
 	int qntdAulas;
+	int status;
 };
 
 struct idxMatriculas{
@@ -498,6 +499,25 @@ void buscaMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &co
     getch();
 }
 
+
+void exclusaoMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &cont, int cod){
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
+        if (cod > idx[m].cod)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    i = idx[m].end;
+    if ((cod == idx[m].cod) && mat[i].status == 0){
+        mat[i].status = 1;
+        cout << "\n\n Matricula excluida com Sucesso";
+    }
+    else
+        cout << "Matricula nao cadastrada";
+    getch();
+}
 //==============================================
 
 int main(){
@@ -540,7 +560,8 @@ int main(){
 	struct modalidades modalidade[t] = {
 		{1, "Boxe", 1, 89.90, 20,  10},
 		{2, "Musculacao", 2, 99.90, 500,  458},
-		{3, "Karatê", 3, 89.90, 20, 13}
+		{3, "Karatê", 3, 89.90, 20, 13},
+		{}
 	};
 	struct modalidades modalidadeNovo[t];
 	
@@ -718,7 +739,12 @@ int main(){
 				break;
 			case 17:
 				cout << "\tExcluir Matriculas" << endl;
-				
+				for(long int codpesq = 9; codpesq != 0;){
+        			cout << "\n\nInforme o codigo da matricula a ser excluida (0 para Encerrar): ";
+        			cin >> codpesq;
+       				 if (codpesq != 0)
+            			exclusaoMatricula(idxMat, matricula, contMatricula, codpesq);
+				}
 				break;
 			case 18:	
 				cout << "\tBuscar Matriculas" << endl;
