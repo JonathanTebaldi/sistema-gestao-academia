@@ -541,6 +541,24 @@ void buscaAleatMat(struct idxMatriculas idx[], struct matriculas mat[], int cont
     getch();
 }
 
+void reorganizacaoMat(struct idxMatriculas idx[], struct idxMatriculas novoidx[], struct matriculas mat[], struct matriculas novoMat[], int &cont){
+    int j=-1;
+    for (int k=0; k < cont; k++){
+        int i = idx[k].end;
+        if (mat[i].status == 0){
+            j++;
+            novoMat[j].codMatr = mat[i].codMatr;
+            novoMat[j].codMod = mat[i].codMod;
+            novoMat[j].cpf = mat[i].cpf;
+            novoMat[j].qntdAulas = mat[i].qntdAulas;
+            novoMat[j].status = 0;
+            novoidx[j].cod = novoMat[j].codMod;
+            novoidx[j].end = j;
+        }
+    }
+    cont = j+1;
+}
+
 //==============================================
 
 int main(){
@@ -601,43 +619,45 @@ int main(){
 		{2, 42050277942, 1},
 		{3, 37343706802, 3}
 	};
+	struct matriculas matriculaNova[t];
 	
 	struct idxMatriculas idxMat[t] = {
 		{2, 1},
 		{3, 2},
 		{1, 0}	
 	};
+	struct idxMatriculas idxMatNovo[t];
 	
 	int opcao = 30;
 	while(opcao != 0){
 		cout << "\n\t** ACADEMIA POWERON **" << endl;
 		cout << "----------------------------------------------" << endl;
 		cout << "Alunos:" << endl;
-		cout << "[1]- Inclus?o de novos alunos" << endl;
-		cout << "[2]- Exclus?o de alunos" << endl;
+		cout << "[1]- Inclusao de novos alunos" << endl;
+		cout << "[2]- Exclusao de alunos" << endl;
 		cout << "[3]- Buscar alunos" << endl;
-		cout << "[4]- Reorganiza??o dos dados dos alunos" << endl;
+		cout << "[4]- Reorganizacao dos dados dos alunos" << endl;
 		cout << "[5]- Leitura exaustiva dos alunos" << endl;
 		cout << "----------------------------------------------" << endl;
 		cout << "Professores:" << endl;
-		cout << "[6]- Inclus?o de novos professores" << endl;
-		cout << "[7]- Exclus?o de professores" << endl;
+		cout << "[6]- Inclusao de novos professores" << endl;
+		cout << "[7]- Exclusao de professores" << endl;
 		cout << "[8]- Buscar professores" << endl;
 		cout << "[9]- Reorganiza??o dos dados dos professores" << endl;
 		cout << "[10]- Leitura exaustiva dos professores" << endl;
 		cout << "----------------------------------------------" << endl;
 		cout << "Modalidades" << endl;
-		cout << "[11]- Inclus?o de novas modalidades" << endl;
-		cout << "[12]- Exclus?o de modalidades" << endl;
+		cout << "[11]- Inclusao de novas modalidades" << endl;
+		cout << "[12]- Exclusao de modalidades" << endl;
 		cout << "[13]- Buscar modalidades" << endl;
-		cout << "[14]- Reorganiza??o dos dados das modalidades" << endl;
+		cout << "[14]- Reorganizacao dos dados das modalidades" << endl;
 		cout << "[15]- Leitura exaustiva das modalidades" << endl;
 		cout << "----------------------------------------------" << endl;
 		cout << "Matriculas:" << endl;
-		cout << "[16]- Inclus?o de novas matriculas" << endl;
-		cout << "[17]- Exclus?o de matriculas" << endl;
+		cout << "[16]- Inclusao de novas matriculas" << endl;
+		cout << "[17]- Exclusao de matriculas" << endl;
 		cout << "[18]- Buscar matriculas" << endl;
-		cout << "[19]- Reorganiza??o dos dados das matriculas" << endl;
+		cout << "[19]- Reorganizacaoo dos dados das matriculas" << endl;
 		cout << "[20]- Leitura exaustiva das matriculas" << endl;
 		cout << "----------------------------------------------" << endl;
 		
@@ -780,6 +800,7 @@ int main(){
 				break;
 			case 19:
 				cout << "\tReorganiza??o das Matriculas" << endl;
+				reorganizacaoMat(idxMat, idxMatNovo, matricula, matriculaNova, contMatricula);
 				break;
 			case 20:
 				cout << "\tLeitura Exaustiva dos registros" << endl;
