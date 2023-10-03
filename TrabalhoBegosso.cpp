@@ -559,6 +559,18 @@ void reorganizacaoMat(struct idxMatriculas idx[], struct idxMatriculas novoidx[]
     cont = j+1;
 }
 
+void exaustivaMatricula(struct idxMatriculas idx[], struct matriculas mat[], int cont){
+    for (int k=0; k < cont; k++){
+        int i = idx[k].end;
+        if (mat[i].status == 0){
+        	cout << "\nCodigo da matricula" << mat[i].codMatr;
+            cout << "\nCodigo da modalidade: " << mat[i].codMod;
+            cout << "\nCPF: " << mat[i].cpf;
+            cout << "\nQuantidade de aulas: " << mat[i].qntdAulas;
+        }
+    }
+}
+
 //==============================================
 
 int main(){
@@ -669,7 +681,7 @@ int main(){
 			case 1:
 				cout << "\tIncluir Aluno: " << endl;
 				for(long int codpesq = 9; codpesq != 0;){
-        			cout << "\n\nInforme o CPF do Aluno a ser Inclu?do(01/01/2021) \n(0 para Encerrar)" << endl;
+        			cout << "\n\nInforme o CPF do Aluno a ser Incluido (0 para Encerrar)" << endl;
         			cin >> codpesq;
         			if (codpesq != 0)
             			buscaAluno(indAln, aluno, contAlunos, codpesq);
@@ -678,7 +690,7 @@ int main(){
 			case 2:
 				cout << "\tExcluir aluno: " << endl;
 				for(int codpesq = 9; codpesq != 0;){
-        			cout << "\n\nInforme o CPF do aluno a ser Exclu?do (0 para Encerrar): ";
+        			cout << "\n\nInforme o CPF do aluno a ser Excluido (0 para Encerrar): ";
         			cin >> codpesq;
        				 if (codpesq != 0)
             			exclusaoAluno(indAln, aluno, contAlunos, codpesq);
@@ -704,14 +716,14 @@ int main(){
 			case 6:
 				cout << "\tIncluir Professor" << endl;
 				for(long int codpesq = 9; codpesq != 0;){
-        			cout << "\n\nInforme o codigo do professor a ser Inclu?do (0 para Encerrar)" << endl;
+        			cout << "\n\nInforme o codigo do professor a ser Incluido (0 para Encerrar)" << endl;
         			cin >> codpesq;
         			if (codpesq != 0)
             			buscaProfessor(indProf, professor, contProfessor, codpesq);
     			}
 				break;
 			case 7:
-				cout << "\rExcluir Professor" << endl;
+				cout << "\tExcluir Professor" << endl;
 				for(long int codpesq = 9; codpesq != 0;){
         			cout << "\n\nInforme o codigo do Professor a ser excluido (0 para Encerrar): ";
         			cin >> codpesq;
@@ -729,7 +741,7 @@ int main(){
            		}
 				break;
 			case 9:
-				cout << "\tReorganiza??o dos professores" << endl;
+				cout << "\tReorganizacao dos professores" << endl;
 				reorganizacaoProf(indProf, idxProfNovo, professor, professorNovo, contProfessor);
 				break;
 			case 10:
@@ -764,7 +776,7 @@ int main(){
            		}
 				break;
 			case 14:
-				cout << "\tReorganiza??o das Modalidades" << endl;
+				cout << "\tReorganizacao das Modalidades" << endl;
 				reorganizacaoMod(idxMod, idxModNovo, modalidade, modalidadeNovo, contModalidade);
 				break;
 			case 15:
@@ -774,7 +786,7 @@ int main(){
 			case 16:
 				cout << "\tIncluir Matriculas" << endl;
 				for(long int codpesq = 9; codpesq != 0;){
-        			cout << "\n\nInforme o codigo do professor a ser Inclu?do (0 para Encerrar)" << endl;
+        			cout << "\n\nInforme o codigo do professor a ser Incluido (0 para Encerrar)" << endl;
         			cin >> codpesq;
         			if (codpesq != 0)
             			buscaMatricula(idxMat, matricula, contMatricula, codpesq);
@@ -799,11 +811,12 @@ int main(){
            		}
 				break;
 			case 19:
-				cout << "\tReorganiza??o das Matriculas" << endl;
+				cout << "\tReorganizacao das Matriculas" << endl;
 				reorganizacaoMat(idxMat, idxMatNovo, matricula, matriculaNova, contMatricula);
 				break;
 			case 20:
 				cout << "\tLeitura Exaustiva dos registros" << endl;
+				exaustivaMatricula(idxMat, matricula, contMatricula);
 				break;							
 			case 0:
 				cout << "Encerrando..." << endl;
