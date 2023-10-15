@@ -34,24 +34,23 @@ void inclusaoAluno(struct idxAlunos idx[], struct alunos aln[], int &cont, long 
     cout << "Altura: ";
     cin >> aln[cont].altura;
     
-    float calc;
+    float alturaM = aln[cont].altura/ 100;
     //calc = aln[cont].peso / (pow(aln[cont].altura,2));
-    calc = aln[cont].peso / (aln[cont].altura * aln[cont].altura);
-    cout << "calc = " << calc;
+    float calc = aln[cont].peso / (alturaM * alturaM);
     if(calc < 17){
-    	cout << "*(Voc? est? muito abaixo do peso)*";
+    	cout << "*(Voce esta muito abaixo do peso)*";
     }else if(calc > 17 && calc < 18,49){
-    	cout << "*(Voc? est? abaixo do peso)*";
+    	cout << "*(Voce esta abaixo do peso)*";
 	}else if(calc > 18,5 && calc < 24,99){
 		cout << "**(Peso normal";		
 	}else if(calc > 25 && calc < 29,99){
-		cout << "*(Voc? est? acima do peso)*";
+		cout << "*(Voce esta acima do peso)*";
 	}else if(calc > 30 && calc < 34,99){
 		cout << "*(Obesidade I)*";
 	}else if(calc > 35 && calc < 39,99){
 		cout << "*(Obesidade II (severa))*";
 	}else{
-		cout << "*(Obesidade III (m?rbida))*";
+		cout << "*(Obesidade III (morbida))*";
 	}
     // inclusao na area de indices
     int i;
@@ -311,13 +310,14 @@ struct idxModalidades{
 	int end;	
 };
 
-void inclusaoModalidade(struct idxModalidades idx[], struct modalidades mod[], int &cont, int cod){  
+void inclusaoModalidade(struct idxModalidades idx[], struct modalidades mod[], int &cont, int cod , struct professores prof[]){  
     // inclusao do novo registro na area de dados
     mod[cont].codMod = cod;
     cout << "\nCodigo da Modalidade: ";
     cin >> mod[cont].codMod;
     cout << "\nCodigo do Professor: ";
     cin >> mod[cont].codProf;
+    cout << " (Professor:)" << prof[mod[cont].codProf].nome << endl;
     cout << "\tDescricao: ";
     cin >> mod[cont].descricao;
     cout << "\tPreco da aula: ";
@@ -338,7 +338,7 @@ void inclusaoModalidade(struct idxModalidades idx[], struct modalidades mod[], i
     cont++;
 }
 
-void buscaModalidade(struct idxModalidades idx[], struct modalidades mod[], int &cont, int cod){
+void buscaModalidade(struct idxModalidades idx[], struct modalidades mod[], int &cont, int cod, struct professores prof[]){
     int i = 0, f = cont;
     int m = (i + f) / 2;
     for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
@@ -358,7 +358,7 @@ void buscaModalidade(struct idxModalidades idx[], struct modalidades mod[], int 
         cout << "\tTotal de Alunos: " << mod[i].totalAlunos;
     }
     else
-        inclusaoModalidade(idx, mod, cont, cod);
+        inclusaoModalidade(idx, mod, cont, cod, prof);
     getch();
 }
 
@@ -425,12 +425,12 @@ void reorganizacaoMod(struct idxModalidades idx[], struct idxModalidades novoidx
     cont = j+1;
 }
 
-void exaustivaModalidade(struct idxModalidades idx[], struct modalidades mod[], int cont){
+void exaustivaModalidade(struct idxModalidades idx[], struct modalidades mod[], int cont, struct professores prof[]){
     for (int k=0; k < cont; k++){
         int i = idx[k].end;
         if (mod[i].status == 0){
         	cout << "\nCodigo da modalidade" << mod[i].codMod;
-            cout << "\nCodigo do professor: " << mod[i].codProf;
+            cout << "\nCodigo do professor "<< prof[i].nome << " e: " <<  mod[i].codProf ;
             cout << "\nDescricao: " << mod[i].descricao;
             cout << "\nPreco da aula: " << mod[i].precoAula;
             cout << "\nLimite de alunos: " << mod[i].limiteAlunos;
@@ -754,7 +754,7 @@ int main(){
         			cout << "\n\nInforme o codigo do professor a ser Inclu?do (0 para Encerrar)" << endl;
         			cin >> codpesq;
         			if (codpesq != 0)
-            			buscaModalidade(idxMod, modalidade, contModalidade, codpesq);
+            			buscaModalidade(idxMod, modalidade, contModalidade, codpesq, professor);
     			}
 				break;
 			case 12:
@@ -781,7 +781,7 @@ int main(){
 				break;
 			case 15:
 				cout << "\tLeitura Exaustiva dos registros" << endl;
-				exaustivaModalidade(idxMod,modalidade,contModalidade);
+				exaustivaModalidade(idxMod,modalidade,contModalidade, professor);
 				break;		
 			case 16:
 				cout << "\tIncluir Matriculas" << endl;
