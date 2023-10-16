@@ -318,13 +318,13 @@ void inclusaoModalidade(struct idxModalidades idx[], struct modalidades mod[], i
     cout << "\nCodigo do Professor: ";
     cin >> mod[cont].codProf;
     cout << " (Professor:)" << prof[mod[cont].codProf].nome << endl;
-    cout << "\tDescricao: ";
+    cout << "\tDescricao: " << endl;
     cin >> mod[cont].descricao;
-    cout << "\tPreco da aula: ";
+    cout << "\tPreco da aula: " << endl;
     cin >> mod[cont].precoAula;
-    cout << "\tLimite de Alunos: ";
+    cout << "\tLimite de Alunos: " << endl;
     cin >> mod[cont].limiteAlunos;
-    cout << "\tTotal de Alunos: ";
+    cout << "\tTotal de Alunos: " << endl;
     cin >> mod[cont].totalAlunos;
     // inclusao na area de indices
     int i;
@@ -352,10 +352,10 @@ void buscaModalidade(struct idxModalidades idx[], struct modalidades mod[], int 
         i = idx[m].end;
         cout << "\nCodigo da Modalidade: " << mod[i].codMod;
         cout << "\nCodigo do Professor: " << mod[i].codProf;
-        cout << "\tDescricao: " << mod[i].descricao;
-        cout << "\tPreco da aula: " << mod[i].precoAula;
-        cout << "\tLimite de Alunos: " << mod[i].limiteAlunos;
-        cout << "\tTotal de Alunos: " << mod[i].totalAlunos;
+        cout << "Descricao: " << mod[i].descricao << endl;
+        cout << "Preco da aula: " << mod[i].precoAula << endl;
+        cout << "Limite de Alunos: " << mod[i].limiteAlunos << endl;
+        cout << "Total de Alunos: " << mod[i].totalAlunos << endl;
     }
     else
         inclusaoModalidade(idx, mod, cont, cod, prof);
@@ -454,15 +454,17 @@ struct idxMatriculas{
 };
 
 
-void inclusaoMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &cont, int cod){  
+void inclusaoMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &cont, int cod, struct alunos aln[],struct modalidades mod[]){  
     // inclusao do novo registro na area de dados
     mat[cont].codMatr = cod;
     cout << "\nCodigo da Matricula: ";
     cin >> mat[cont].codMatr;
     cout << "\nCPF do aluno: ";
     cin >> mat[cont].cpf;
+    cout << " - " << aln[cont].nome;
     cout << "\tCodigo da modalidade: ";
     cin >> mat[cont].codMod;
+    cout << " - (" << mod[cont].descricao << ") ";
     cout << "\tQuantidade de aulas: ";
     cin >> mat[cont].qntdAulas;
     // inclusao na area de indices
@@ -477,7 +479,7 @@ void inclusaoMatricula(struct idxMatriculas idx[], struct matriculas mat[], int 
     cont++;
 }
 
-void buscaMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &cont, int cod){
+void buscaMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &cont, int cod, struct alunos aln[], struct modalidades mod[]){
     int i = 0, f = cont;
     int m = (i + f) / 2;
     for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
@@ -495,7 +497,7 @@ void buscaMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &co
         cout << "\tQuantidade de aulas: " << mat[i].qntdAulas;
     }
     else
-        inclusaoMatricula(idx, mat, cont, cod);
+        inclusaoMatricula(idx, mat, cont, cod, aln, mod);
     getch();
 }
 
@@ -789,7 +791,7 @@ int main(){
         			cout << "\n\nInforme o codigo do professor a ser Incluido (0 para Encerrar)" << endl;
         			cin >> codpesq;
         			if (codpesq != 0)
-            			buscaMatricula(idxMat, matricula, contMatricula, codpesq);
+            			buscaMatricula(idxMat, matricula, contMatricula, codpesq, aluno, modalidade);
     			}
 				break;
 			case 17:
