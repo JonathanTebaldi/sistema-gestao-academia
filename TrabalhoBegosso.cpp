@@ -161,6 +161,7 @@ void reorganizacaoAluno(struct idxAlunos idx[], struct idxAlunos novoidx[], stru
         }
     }
     cont = j+1;
+    cout << "Reorganizacao realizada" << endl;
 }
 
 //==============================================
@@ -489,7 +490,7 @@ void buscaMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &co
             f = m - 1;
     }
     if (cod == idx[m].cod){
-        cout << "\n\n Modalidade ja Cadastrada - nao pode ser cadastrado novamente";
+        cout << "\n\n Matricula ja Cadastrada - nao pode ser cadastrado novamente";
         i = idx[m].end;
         cout << "\nCodigo da Matricula: " << mat[i].codMatr;
         cout << "\nCPF do aluno: " << mat[i].cpf;
@@ -502,7 +503,7 @@ void buscaMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &co
 }
 
 
-void exclusaoMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &cont, int cod){
+void exclusaoMatricula(struct idxMatriculas idx[], struct matriculas mat[], int &cont, int cod, struct modalidades mod[]){
     int i = 0, f = cont;
     int m = (i + f) / 2;
     for (; f >= i && cod != idx[m].cod; m = (i + f) / 2){
@@ -514,6 +515,7 @@ void exclusaoMatricula(struct idxMatriculas idx[], struct matriculas mat[], int 
     i = idx[m].end;
     if ((cod == idx[m].cod) && mat[i].status == 0){
         mat[i].status = 1;
+       mod[i].totalAlunos = mod[i].totalAlunos - 1;
         cout << "\n\n Matricula excluida com Sucesso";
     }
     else
@@ -575,6 +577,50 @@ void exaustivaMatricula(struct idxMatriculas idx[], struct matriculas mat[], int
 
 //==============================================
 
+void faturamentoModalidade(matriculas matricula[], modalidades modalidade[], professores professor[], int& contadorMatriculas, int& contadorModalidades, int contadorProfessores) {
+    int codigoModalidade;
+
+    cout << "Informe o código da modalidade: ";
+    cin >> codigoModalidade;
+
+    bool modalidadeEncontrada = false;
+    int indexModalidade = -1;  // Índice da modalidade no vetor
+
+    // Procurar e exibir a descrição da Modalidade com base no código da modalidade
+    for (int i = 0; i < contadorModalidades; i++) {
+        if (modalidade[i].codMod == codigoModalidade && modalidade[i].status == 0) {
+            cout << "Descrição da Modalidade: " << modalidade[i].descricao << endl;
+            modalidadeEncontrada = true;
+            indexModalidade = i;
+            break;
+        }
+    }
+
+    if (!modalidadeEncontrada) {
+        cout << "Modalidade não encontrada." << endl;
+        return;
+    }
+
+    // Encontrar o nome do professor com base no código do professor na tabela Modalidades
+    bool professorEncontrado = false;
+    for (int i = 0; i < contadorProfessores; i++) {
+        if (professor[i].codProf == modalidade[indexModalidade].codProf && professor[i].status == 0) {
+            cout << "Nome do Professor: " << professor[i].nome << endl;
+            professorEncontrado = true;
+            break;
+        }
+    }
+
+    if (!professorEncontrado) {
+        cout << "Professor não encontrado." << endl;
+        return;
+    }
+
+    float valorFaturado = modalidade[indexModalidade].precoAula * modalidade[indexModalidade].totalAlunos;
+
+    cout << "Valor Faturado: " << valorFaturado << endl;
+}
+
 int main(){
 	int const t = 4;
 	setlocale(LC_ALL, "portuguese");
@@ -631,7 +677,7 @@ int main(){
 	struct matriculas matricula[t] = {
 		{1, 57140933804, 2},
 		{2, 42050277942, 1},
-		{3, 37343706802, 3}
+		{3, 123, 3}
 	};
 	struct matriculas matriculaNova[t];
 	
@@ -674,6 +720,8 @@ int main(){
 		cout << "[19]- Reorganizacaoo dos dados das matriculas" << endl;
 		cout << "[20]- Leitura exaustiva das matriculas" << endl;
 		cout << "----------------------------------------------" << endl;
+		cout << "[21]- Faturamento" << endl;
+		//cout << "[21]- Faturamento das modalidades"
 		
 		cout << "[0]- Sair" << endl;
 		
@@ -800,7 +848,7 @@ int main(){
         			cout << "\n\nInforme o codigo da matricula a ser excluida (0 para Encerrar): ";
         			cin >> codpesq;
        				 if (codpesq != 0)
-            			exclusaoMatricula(idxMat, matricula, contMatricula, codpesq);
+            			exclusaoMatricula(idxMat, matricula, contMatricula, codpesq, modalidade);
 				}
 				break;
 			case 18:	
@@ -819,6 +867,10 @@ int main(){
 			case 20:
 				cout << "\tLeitura Exaustiva dos registros" << endl;
 				exaustivaMatricula(idxMat, matricula, contMatricula);
+				break;
+			case 21 :
+				cout << "\tFaturamento" << endl;
+				faturamentoModalidade(matricula, modalidade, professor, contMatricula, contModalidade, contProfessor);
 				break;							
 			case 0:
 				cout << "Encerrando..." << endl;
